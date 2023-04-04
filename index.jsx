@@ -28,12 +28,20 @@ const texty = css`
   vertical-align: middle;
   color: black;
   transform: scale(.9,1);
+  filter:
+    drop-shadow(1px 1px 1px rgb(240,240,240, .5))
+    drop-shadow(-1px -1px 1px rgb(60, 60, 60, .5))
+  ;
 `
 
 const logo = css`
   height: 65px;
   width: 65px;
   margin: 0;
+  filter:
+    drop-shadow(1px 1px 1px rgb(240,240,240, .5))
+    drop-shadow(-1px -1px 1px rgb(60, 60, 60, .5))
+  ;
 `
 
 export const render = ({ output }) => {
