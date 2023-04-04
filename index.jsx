@@ -68,18 +68,21 @@ export const render = ({ output }) => {
         const lettersAndCommas = /(\,|[a-z])*/gi;
         processor = modelCode.replace(lettersAndCommas, '');
 
-        // add some more digits
+        // make sure the final result will be 5 digits to seem like the 90s but newer
+        if (processor.length == 2) {
+          processor += '0';
+        }
         if (data.SPHardwareDataType[0].number_processors) {
           var processorCount = data.SPHardwareDataType[0].number_processors;
           if (processorCount > 10) {
-            processor += '0' + processorCount;
+            processor += processorCount;
           }
           else {
-            processor += '00' + processorCount;
+            processor += '0' + processorCount;
           }
         }
         else {
-          processor += '000';
+          processor += '00';
         }
       }
       var memory    = data.SPHardwareDataType[0].physical_memory;
