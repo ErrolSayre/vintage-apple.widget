@@ -38,16 +38,44 @@ const logo = css`
 
 export const render = ({ output }) => {
 
+  var systemName = 'Power Macintosh 21000';
+  
   var data = JSON.parse(output);
-  var modelCode = data.SPHardwareDataType[0].machine_model;
-  var modelName = data.SPHardwareDataType[0].machine_name;
-  var processor = data.SPHardwareDataType[0].chip_type;
-  var memory    = data.SPHardwareDataType[0].physical_memory;
+  if (data) {
+    if (data.SPHardwareDataType) {
+      var modelCode = data.SPHardwareDataType[0].machine_model;
+      var modelName = data.SPHardwareDataType[0].machine_name;
+      var processor = '10000';
+      if (data.SPHardwareDataType[0].chip_type) {
+        processor = data.SPHardwareDataType[0].chip_type;
+        processor = processor.replace('Apple ', '');
+      }
+      else {
+        // extract the model code to build a number
+        const lettersAndCommas = /(\,|[a-z])*/gi;
+        processor = modelCode.replace(lettersAndCommas, '');
 
-  // clean things up a bit
-  processor = processor.replace('Apple ', '');
-  memory = memory.replace(' GB', '');
-  var systemName = modelName + ' ' + processor + '/' + memory;
+        // add some more digits
+        if (data.SPHardwareDataType[0].number_processors) {
+          var processorCount = data.SPHardwareDataType[0].number_processors;
+          if (processorCount > 10) {
+            processor += '0' + processorCount;
+          }
+          else {
+            processor += '00' + processorCount;
+          }
+        }
+        else {
+          processor += '000';
+        }
+      }
+      var memory    = data.SPHardwareDataType[0].physical_memory;
+      memory = memory.replace(' GB', '');
+
+      // assemble as a vintagey name
+      systemName = modelName + ' ' + processor + '/' + memory;
+    }
+  }
 
   return (
     <div className={container}>
