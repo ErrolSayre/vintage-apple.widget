@@ -13,6 +13,7 @@ const container = css `
   font-size: 30pt;
   font-family: 'EB Garamond', serif;
   font-weight: 300;
+  line-height: 1em;
 `
 
 const imagey = css `
@@ -24,7 +25,11 @@ const imagey = css `
 const texty = css`
   display: table-cell;
   margin: 0;
-  padding: 0;
+  padding: 0 .5em;
+  background: #E5E1E6;
+  border: 2px solid #E5E1E6;
+  border-radius: .25em;
+  border-color: rgb(255,255,255, .5) rgb(60, 60, 60, .5) rgb(60, 60, 60, .5) rgb(255,255,255, .5);
   vertical-align: middle;
   color: black;
   transform: scale(.9,1);
@@ -35,8 +40,8 @@ const texty = css`
 `
 
 const logo = css`
-  height: 65px;
-  width: 65px;
+  height: 55px;
+  width: 55px;
   margin: 0;
   filter:
     drop-shadow(1px 1px 1px rgb(240,240,240, .5))
