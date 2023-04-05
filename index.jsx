@@ -6,8 +6,10 @@ export const refreshFrequency = false
 
 const container = css `
   position: fixed;
+  /* Add some space to bottom to make room for your Dock. */
   bottom: 20px;
   left: 20px;
+
   display: table-row;
   @import url('https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap');
   font-size: 30pt;
