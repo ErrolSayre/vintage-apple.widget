@@ -30,8 +30,8 @@ const texty = css`
   padding: 0 .5em;
   background: #E5E1E6;
   border: 2px solid #E5E1E6;
+  border-style: outset;
   border-radius: .25em;
-  border-color: rgb(255,255,255, .5) rgb(60, 60, 60, .5) rgb(60, 60, 60, .5) rgb(255,255,255, .5);
   vertical-align: middle;
   color: black;
   transform: scale(.9,1);
