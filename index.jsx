@@ -55,43 +55,45 @@ export const render = ({ output }) => {
 
   var systemName = 'Power Macintosh 21000';
   
-  var data = JSON.parse(output);
-  if (data) {
-    if (data.SPHardwareDataType) {
-      var modelCode = data.SPHardwareDataType[0].machine_model;
-      var modelName = data.SPHardwareDataType[0].machine_name;
-      var processor = '10000';
-      if (data.SPHardwareDataType[0].chip_type) {
-        processor = data.SPHardwareDataType[0].chip_type;
-        processor = processor.replace('Apple ', '');
-      }
-      else {
-        // extract the model code to build a number
-        const lettersAndCommas = /(\,|[a-z])*/gi;
-        processor = modelCode.replace(lettersAndCommas, '');
-
-        // make sure the final result will be 5 digits to seem like the 90s but newer
-        if (processor.length == 2) {
-          processor += '0';
-        }
-        if (data.SPHardwareDataType[0].number_processors) {
-          var processorCount = data.SPHardwareDataType[0].number_processors;
-          if (processorCount > 10) {
-            processor += processorCount;
-          }
-          else {
-            processor += '0' + processorCount;
-          }
+  if (output) {
+    var data = JSON.parse(output);
+    if (data) {
+      if (data.SPHardwareDataType) {
+        var modelCode = data.SPHardwareDataType[0].machine_model;
+        var modelName = data.SPHardwareDataType[0].machine_name;
+        var processor = '10000';
+        if (data.SPHardwareDataType[0].chip_type) {
+          processor = data.SPHardwareDataType[0].chip_type;
+          processor = processor.replace('Apple ', '');
         }
         else {
-          processor += '00';
+          // extract the model code to build a number
+          const lettersAndCommas = /(\,|[a-z])*/gi;
+          processor = modelCode.replace(lettersAndCommas, '');
+  
+          // make sure the final result will be 5 digits to seem like the 90s but newer
+          if (processor.length == 2) {
+            processor += '0';
+          }
+          if (data.SPHardwareDataType[0].number_processors) {
+            var processorCount = data.SPHardwareDataType[0].number_processors;
+            if (processorCount > 10) {
+              processor += processorCount;
+            }
+            else {
+              processor += '0' + processorCount;
+            }
+          }
+          else {
+            processor += '00';
+          }
         }
+        var memory    = data.SPHardwareDataType[0].physical_memory;
+        memory = memory.replace(' GB', '');
+  
+        // assemble as a vintagey name
+        systemName = modelName + ' ' + processor + '/' + memory;
       }
-      var memory    = data.SPHardwareDataType[0].physical_memory;
-      memory = memory.replace(' GB', '');
-
-      // assemble as a vintagey name
-      systemName = modelName + ' ' + processor + '/' + memory;
     }
   }
 
