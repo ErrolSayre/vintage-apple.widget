@@ -85,7 +85,7 @@ export const render = ({ output }) => {
     if (pos > 0) {
       pos += 6;
       working = output.substr(pos, output.indexOf(newLine, pos) - pos);
-      processor = working.replace('Apple ');
+      processor = working.replace('Apple ', '');
     }
     else {
       // this must be an intel box
