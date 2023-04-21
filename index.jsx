@@ -57,6 +57,7 @@ export const render = ({ output }) => {
   
   if (output) {
     var newLine   = "\n";
+    var space     = " ";
     var modelCode = '';
     var modelName = 'Power Macintosh'
     var processor = 'G7';
@@ -86,6 +87,10 @@ export const render = ({ output }) => {
       pos += 6;
       working = output.substr(pos, output.indexOf(newLine, pos) - pos);
       processor = working.replace('Apple ', '');
+      
+      pos = output.indexOf('Cores: ') + 7;
+      cores = output.substr(pos, output.indexOf(space, pos) - pos);
+      processor += ' ' + cores;
     }
     else {
       // this must be an intel box
