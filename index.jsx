@@ -103,7 +103,9 @@ export const render = ({ output }) => {
         working = output.substr(pos, output.indexOf(newLine, pos) - pos);
         pos = working.indexOf('-Core');
         cores = working.substr(0, pos);
-        working = working.replace(cores, '').replace('-Core ', '').replace('Intel ', '');
+        if (cores < 10) {
+          cores = '0' + cores;
+        }
         
         // extract the CPU speed
         pos = output.indexOf('Processor Speed: ') + 17;
