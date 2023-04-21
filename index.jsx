@@ -1,6 +1,6 @@
 import { css } from "uebersicht"
 
-export const command = 'system_profiler -json SPHardwareDataType'
+export const command = 'system_profiler SPHardwareDataType'
 
 export const refreshFrequency = false
 
@@ -56,45 +56,62 @@ export const render = ({ output }) => {
   var systemName = 'Power Macintosh 21000';
   
   if (output) {
-    var data = JSON.parse(output);
-    if (data) {
-      if (data.SPHardwareDataType) {
-        var modelCode = data.SPHardwareDataType[0].machine_model;
-        var modelName = data.SPHardwareDataType[0].machine_name;
-        var processor = '10000';
-        if (data.SPHardwareDataType[0].chip_type) {
-          processor = data.SPHardwareDataType[0].chip_type;
-          processor = processor.replace('Apple ', '');
-        }
-        else {
-          // extract the model code to build a number
-          const lettersAndCommas = /(\,|[a-z])*/gi;
-          processor = modelCode.replace(lettersAndCommas, '');
-  
-          // make sure the final result will be 5 digits to seem like the 90s but newer
-          if (processor.length == 2) {
-            processor += '0';
-          }
-          if (data.SPHardwareDataType[0].number_processors) {
-            var processorCount = data.SPHardwareDataType[0].number_processors;
-            if (processorCount > 10) {
-              processor += processorCount;
-            }
-            else {
-              processor += '0' + processorCount;
-            }
-          }
-          else {
-            processor += '00';
-          }
-        }
-        var memory    = data.SPHardwareDataType[0].physical_memory;
-        memory = memory.replace(' GB', '');
-  
-        // assemble as a vintagey name
-        systemName = modelName + ' ' + processor + '/' + memory;
+    var newLine   = "\n";
+    var modelCode = '';
+    var modelName = 'Power Macintosh'
+    var processor = 'G7';
+    var memory    = 16;
+    var cores     = 0;
+    var working = '';
+    var pos = 0;
+    
+    // extract the various elements from the text
+    pos = output.indexOf('Model Name: ');
+    if (pos) {
+      pos += 12;
+      modelName = output.substr(pos, output.indexOf(newLine, pos) - pos);
+    }
+    
+    // memory
+    pos = output.indexOf('Memory: ');
+    if (pos > 0) {
+      pos += 8;
+      working = working = output.substr(pos, output.indexOf(newLine, pos) - pos);
+      pos = working.indexOf(' GB');
+      memory = working.substring(0, pos);
+    }
+    // determine if this is an Intel or Apple Silicon mac
+    pos = output.indexOf('Chip: ');
+    if (pos > 0) {
+      pos += 6;
+      working = output.substr(pos, output.indexOf(newLine, pos) - pos);
+      processor = working.replace('Apple ');
+    }
+    else {
+      // this must be an intel box
+      // use the processor speed and number of cores to make up the model number
+      pos = output.indexOf('Processor Name: ');
+      if (pos > 0) {
+        pos += 16;
+        
+        // extract the number of cores
+        working = output.substr(pos, output.indexOf(newLine, pos) - pos);
+        pos = working.indexOf('-Core');
+        cores = working.substr(0, pos);
+        working = working.replace(cores, '').replace('-Core ', '').replace('Intel ', '');
+        
+        // extract the CPU speed
+        pos = output.indexOf('Processor Speed: ') + 17;
+        working = output.substr(pos, output.indexOf(newLine, pos) - pos);
+        pos = working.indexOf(' GHz');
+        var speed = working.substr(0, pos);
+
+        // multiply by 100 and accept JS’ string concatenation 🤷🏻‍♂️
+        processor = speed * 100 + cores;
       }
     }
+    // assemble as a vintagey name
+    systemName = modelName + ' ' + processor + '/' + memory;
   }
 
   return (
