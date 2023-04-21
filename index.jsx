@@ -112,7 +112,7 @@ export const render = ({ output }) => {
         var speed = working.substr(0, pos);
 
         // multiply by 100 and accept JS’ string concatenation 🤷🏻‍♂️
-        processor = speed * 100 + cores;
+        processor = Math.floor(speed * 100) + cores;
       }
     }
     // assemble as a vintagey name
