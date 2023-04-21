@@ -2,7 +2,7 @@ import { css } from "uebersicht"
 
 export const command = 'system_profiler SPHardwareDataType'
 
-export const refreshFrequency = false
+export const refreshFrequency = 600000
 
 const container = css `
   position: fixed;
