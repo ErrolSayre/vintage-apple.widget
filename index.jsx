@@ -1,4 +1,4 @@
-import { css } from "uebersicht"
+import { css } from 'uebersicht'
 
 export const command = 'system_profiler SPHardwareDataType'
 
