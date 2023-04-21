@@ -9,7 +9,7 @@ various numerics available there.
 
 Apple Silicon models will generate names more like the early 2000s crossed with 1989, but Intel
 based Macs really go full-in with a multi-digit moniker made up of the CPU speed and number of
-cores. I‘m particularly fond of my “Mac Pro 27012/48”.
+cores. I‘m particularly fond of my “Mac Pro 27012/64”.
 
 ## Bottom Dockers
 
